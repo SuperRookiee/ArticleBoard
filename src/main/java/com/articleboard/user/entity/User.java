@@ -1,4 +1,4 @@
-package com.articleboard.user;
+package com.articleboard.user.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

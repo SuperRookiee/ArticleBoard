@@ -1,4 +1,4 @@
-package com.articleboard.user;
+package com.articleboard.user.entity;
 
 public enum userStatus {
     ACTIVE, BANNED, WITHDRAW
