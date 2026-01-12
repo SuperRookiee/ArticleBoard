@@ -1,9 +1,6 @@
 package com.articleboard.user.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 
@@ -21,11 +18,14 @@ public class User {
 
     private String temporaryName;
 
+    @Enumerated(EnumType.STRING)
     private nicknameType nicknameType;
 
+    @Enumerated(EnumType.STRING)
     private userRole role;
 
     private LocalDateTime createdAt;
 
+    @Enumerated(EnumType.STRING)
     private userStatus status;
 }
