@@ -1,6 +1,6 @@
-package com.articleboard.comment;
+package com.articleboard.comment.entity;
 
-import com.articleboard.user.User;
+import com.articleboard.user.entity.User;
 import jakarta.persistence.*;
 
 @Entity

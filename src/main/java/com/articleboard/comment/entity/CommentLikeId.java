@@ -1,11 +1,11 @@
-package com.articleboard.comment;
+package com.articleboard.comment.entity;
 
 import jakarta.persistence.Embeddable;
 
 import java.util.Objects;
 
 @Embeddable
-public class CommentDislikeId {
+public class CommentLikeId {
 
     private Long id;
     private Long userNo;
@@ -13,7 +13,7 @@ public class CommentDislikeId {
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
-        CommentDislikeId that = (CommentDislikeId) o;
+        CommentLikeId that = (CommentLikeId) o;
         return Objects.equals(id, that.id) && Objects.equals(userNo, that.userNo);
     }
 
