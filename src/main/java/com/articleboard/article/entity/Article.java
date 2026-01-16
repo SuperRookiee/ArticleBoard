@@ -1,11 +1,16 @@
-package com.articleboard.article;
+package com.articleboard.article.entity;
 
-import com.articleboard.user.User;
+import com.articleboard.user.entity.User;
 import jakarta.persistence.*;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
 
 import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "article")
+@SQLRestriction("deleted_at IS NULL")
+@SQLDelete(sql = "UPDATE article SET deleted_at = NOW() WHERE article_no = ?")
 public class Article {
 
     @Id
@@ -34,9 +39,7 @@ public class Article {
 
     private Long commentCount;
 
-    private Boolean isDeleted;
-
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "userNo")
+    @JoinColumn(name = "user_no")
     private User user;
 }
