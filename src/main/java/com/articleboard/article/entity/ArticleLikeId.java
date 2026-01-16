@@ -1,4 +1,4 @@
-package com.articleboard.article;
+package com.articleboard.article.entity;
 
 import jakarta.persistence.Embeddable;
 

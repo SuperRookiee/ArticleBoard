@@ -1,6 +1,6 @@
-package com.articleboard.article;
+package com.articleboard.article.entity;
 
-import com.articleboard.user.User;
+import com.articleboard.user.entity.User;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
