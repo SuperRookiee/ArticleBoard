@@ -8,18 +8,18 @@ import java.util.Objects;
 @Embeddable
 public class ArticleDislikeId implements Serializable {
 
-    private Long articleNo;
-    private Long userNo;
+    private Long articleId;
+    private Long userId;
 
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         ArticleDislikeId that = (ArticleDislikeId) o;
-        return Objects.equals(articleNo, that.articleNo) && Objects.equals(userNo, that.userNo);
+        return Objects.equals(articleId, that.articleId) && Objects.equals(userId, that.userId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(articleNo, userNo);
+        return Objects.hash(articleId, userId);
     }
 }

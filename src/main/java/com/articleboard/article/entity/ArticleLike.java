@@ -11,14 +11,14 @@ public class ArticleLike implements Serializable {
     @EmbeddedId
     private ArticleLikeId id;
 
-    @MapsId("articleNo")
+    @MapsId("articleIo")
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "article_no")
+    @JoinColumn(name = "article_id")
     private Article article;
 
-    @MapsId("userNo")
+    @MapsId("userId")
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_no")
+    @JoinColumn(name = "user_id")
     private User user;
 
     public ArticleLike() {}

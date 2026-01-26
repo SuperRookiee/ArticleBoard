@@ -21,5 +21,5 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
 
     Page<Article> findByLikeCountGreaterThanEqual(Long likeCount, Pageable pageable);
 
-    Page<Article> findByUser_UserNo(Long userNo, Pageable pageable);
+    Page<Article> findByUser_UserId(Long userId, Pageable pageable);
 }

@@ -15,11 +15,11 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @SQLRestriction("deleted_at IS NULL")
-@SQLDelete(sql = "UPDATE article SET deleted_at = NOW() WHERE article_no = ?")
+@SQLDelete(sql = "UPDATE article SET deleted_at = NOW() WHERE article_id = ?")
 public class Article {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long articleNo;
+    private Long articleId;
 
     @Column(nullable = false, length = 100)
     private String title;
@@ -34,7 +34,7 @@ public class Article {
     private Long viewCount = 0L;
 
     @Column(nullable = false)
-    private Boolean isNotice = false;
+    private boolean isNotice = false;
 
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
@@ -53,7 +53,7 @@ public class Article {
     private Long commentCount = 0L;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_no", nullable = false)
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     public Article(String title, String content, String writer, Boolean isNotice, User user) {

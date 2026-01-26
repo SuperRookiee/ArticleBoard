@@ -8,17 +8,17 @@ import java.util.Objects;
 public class CommentDislikeId {
 
     private Long id;
-    private Long userNo;
+    private Long userId;
 
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         CommentDislikeId that = (CommentDislikeId) o;
-        return Objects.equals(id, that.id) && Objects.equals(userNo, that.userNo);
+        return Objects.equals(id, that.id) && Objects.equals(userId, that.userId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, userNo);
+        return Objects.hash(id, userId);
     }
 }

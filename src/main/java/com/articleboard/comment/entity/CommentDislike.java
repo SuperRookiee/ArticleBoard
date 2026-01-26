@@ -14,9 +14,9 @@ public class CommentDislike {
     @JoinColumn(name = "id")
     private Comment comment;
 
-    @MapsId("userNo")
+    @MapsId("userId")
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_no")
+    @JoinColumn(name = "user_id")
     private User user;
 
     public CommentDislike() {}
