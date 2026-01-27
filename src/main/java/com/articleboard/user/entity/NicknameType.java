@@ -1,5 +1,5 @@
 package com.articleboard.user.entity;
 
-public enum nicknameType {
+public enum NicknameType {
     FIXED, TEMPORARY
 }

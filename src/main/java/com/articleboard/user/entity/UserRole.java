@@ -1,5 +1,5 @@
 package com.articleboard.user.entity;
 
-public enum userRole {
+public enum UserRole {
     MANAGER, USER
 }

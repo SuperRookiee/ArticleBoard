@@ -1,5 +1,5 @@
 package com.articleboard.user.entity;
 
-public enum userStatus {
+public enum UserStatus {
     ACTIVE, BANNED, WITHDRAW
 }
