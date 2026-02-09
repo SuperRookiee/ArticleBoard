@@ -71,4 +71,8 @@ public class Article {
         this.isNotice = isNotice;
         this.updatedAt = LocalDateTime.now();
     }
+
+    public void increaseViewCount() {
+        this.viewCount += 1;
+    }
 }
