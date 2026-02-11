@@ -1,12 +1,14 @@
 package com.articleboard.comment.service;
 
 import com.articleboard.article.entity.Article;
+import com.articleboard.article.repository.ArticleRepository;
 import com.articleboard.comment.dto.CommentRequestDto;
 import com.articleboard.comment.dto.CommentResponseDto;
 import com.articleboard.comment.entity.Comment;
 import com.articleboard.comment.repository.CommentRepository;
 import com.articleboard.global.exception.CustomException;
 import com.articleboard.user.entity.User;
+import com.articleboard.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,6 +22,7 @@ public class CommentService {
 
     private final CommentRepository commentRepository;
 
+    /*
     @Transactional
     public void createComment(CommentRequestDto dto, Article article, User user) {
         commentRepository.save(Comment.createComment(dto.getContent(), article, user));
@@ -36,12 +39,75 @@ public class CommentService {
         Comment comment = findComment(commentId);
         comment.validateOwner(user);
 
-        if (comment.getParent() == null && commentRepository.existsByParent(commentId)) {
-            comment.delete();
+        if (comment.getParentId() == null) {
+            if (commentRepository.existsByParentId(commentId)) {
+                comment.delete();
+            } else {
+                commentRepository.delete(comment);
+            }
         } else {
             commentRepository.delete(comment);
+
+            Comment parent = findComment(comment.getParentId());
+            if (parent.getIsDeleted() && !commentRepository.existsByParentId(parent.getId())) {
+                commentRepository.delete(parent);
+            }
         }
     }
+    */
+
+    // TODO: 로그인 구현 후 User user로 변경, findUser() 및 UserRepository 제거
+    private final UserRepository userRepository;  // 추가 (추후 로그인 구현 시 제거)
+    private final ArticleRepository articleRepository;
+    
+    @Transactional
+    public Long createComment(CommentRequestDto dto, Long articleId, Long userId) {
+        User user = findUser(userId);
+        Article article = findArticle(articleId);
+        Comment comment = Comment.createComment(dto.getContent(), article, user);
+
+        return commentRepository.save(comment).getCommentId();
+    }
+
+    @Transactional
+    public void updateComment(Long commentId, CommentRequestDto dto, Long userId) {
+        Comment comment = findComment(commentId);
+        User user = findUser(userId);
+        comment.update(dto.getContent(), user);
+    }
+
+    @Transactional
+    public void deleteComment(Long commentId, Long userId) {
+        Comment comment = findComment(commentId);
+        User user = findUser(userId);
+        comment.validateOwner(user);
+
+        if (comment.getParentId() == null) {
+            if (commentRepository.existsByParentId(comment.getCommentId())) {
+                comment.delete();
+            } else {
+                commentRepository.delete(comment);
+            }
+        } else {
+            commentRepository.delete(comment);
+
+            Comment parent = findComment(comment.getParentId());
+            if (parent.getIsDeleted() && !commentRepository.existsByParentId(parent.getCommentId())) {
+                commentRepository.delete(parent);
+            }
+        }
+    }
+
+    private User findUser(Long userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new CustomException("유저 없음"));
+    }
+
+    private Article findArticle(Long articleId) {
+        return articleRepository.findById(articleId)
+                .orElseThrow(() -> new CustomException("게시글 없음"));
+    }
+    // TODO: 여기까지 테스트를 위해 추가한 부분
 
     public Page<CommentResponseDto> getCommentList(Long articleId, Pageable pageable) {
         return commentRepository.findByArticle_ArticleId(articleId, pageable)
@@ -52,4 +118,6 @@ public class CommentService {
         return commentRepository.findById(commentId)
                 .orElseThrow(() -> new CustomException("댓글 없음"));
     }
+    
+    // TODO: 대댓글 작성 기능 구현
 }
