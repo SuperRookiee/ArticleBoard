@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 public class Comment {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long CommentId;
+    private Long commentId;
 
     @Column(nullable = false, length = 10)
     private String writer;
@@ -28,6 +28,9 @@ public class Comment {
 
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
+
+    @Column(name = "root_id")
+    private Long rootId;
 
     @Column(name = "parent_id")
     private Long parentId;
@@ -42,11 +45,12 @@ public class Comment {
     @JoinColumn(name = "article_id", nullable = false)
     private Article article;
 
-    public Comment(String writer, String content, User user, Article article, Long parentId) {
+    public Comment(String writer, String content, User user, Article article, Long rootId, Long parentId) {
         this.writer = writer;
         this.content = content;
         this.user = user;
         this.article = article;
+        this.rootId = rootId;
         this.parentId = parentId;
         this.createdAt = LocalDateTime.now();
     }
@@ -57,8 +61,21 @@ public class Comment {
                 content,
                 user,
                 article,
+                null,
                 null
         );
+    }
+
+    public static Comment createReply(String content, User user, Comment target) {
+        Long rootId = target.getRootId() != null ? target.getRootId() : target.getCommentId();
+
+        return new Comment(
+                user.getDisplayName(),
+                content,
+                user,
+                target.getArticle(),
+                rootId,
+                target.getCommentId());
     }
 
     public void update(String content, User user) {
@@ -66,9 +83,9 @@ public class Comment {
         this.content = content;
     }
 
+    // TODO: delete에 validateOwner 추가 방향 고려
     public void delete() {
         this.isDeleted = true;
-
     }
 
     public void validateOwner(User user) {

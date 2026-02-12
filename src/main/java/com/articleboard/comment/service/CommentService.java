@@ -59,7 +59,7 @@ public class CommentService {
     // TODO: 로그인 구현 후 User user로 변경, findUser() 및 UserRepository 제거
     private final UserRepository userRepository;  // 추가 (추후 로그인 구현 시 제거)
     private final ArticleRepository articleRepository;
-    
+
     @Transactional
     public Long createComment(CommentRequestDto dto, Long articleId, Long userId) {
         User user = findUser(userId);
@@ -76,11 +76,12 @@ public class CommentService {
         comment.update(dto.getContent(), user);
     }
 
+    // TODO: 삭제 기준을 parentId -> rootId로 변경하기
     @Transactional
     public void deleteComment(Long commentId, Long userId) {
         Comment comment = findComment(commentId);
         User user = findUser(userId);
-        comment.validateOwner(user);
+        comment.validateOwner(user); // TODO: validateOwner를 Service -> Entity (delete) 이동 고려
 
         if (comment.getParentId() == null) {
             if (commentRepository.existsByParentId(comment.getCommentId())) {
@@ -118,6 +119,11 @@ public class CommentService {
         return commentRepository.findById(commentId)
                 .orElseThrow(() -> new CustomException("댓글 없음"));
     }
-    
-    // TODO: 대댓글 작성 기능 구현
+
+    @Transactional
+    public Long createChildComment(CommentRequestDto dto, Long userId, Long targetId) {
+        User user = findUser(userId);
+        Comment target = findComment(targetId);
+        return commentRepository.save(Comment.createReply(dto.getContent(), user, target)).getCommentId();
+    }
 }
