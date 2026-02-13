@@ -83,8 +83,8 @@ public class Comment {
         this.content = content;
     }
 
-    // TODO: delete에 validateOwner 추가 방향 고려
-    public void delete() {
+    public void softDelete(User user) {
+        validateOwner(user);
         this.isDeleted = true;
     }
 

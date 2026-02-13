@@ -76,27 +76,30 @@ public class CommentService {
         comment.update(dto.getContent(), user);
     }
 
-    // TODO: 삭제 기준을 parentId -> rootId로 변경하기
     @Transactional
     public void deleteComment(Long commentId, Long userId) {
         Comment comment = findComment(commentId);
         User user = findUser(userId);
-        comment.validateOwner(user); // TODO: validateOwner를 Service -> Entity (delete) 이동 고려
 
-        if (comment.getParentId() == null) {
-            if (commentRepository.existsByParentId(comment.getCommentId())) {
-                comment.delete();
+        if (comment.getRootId() == null) {
+            if (commentRepository.existsByRootId(comment.getCommentId())) {
+                comment.softDelete(user);
             } else {
-                commentRepository.delete(comment);
+                hardDelete(comment, user);
             }
         } else {
-            commentRepository.delete(comment);
+            hardDelete(comment, user);
 
-            Comment parent = findComment(comment.getParentId());
-            if (parent.getIsDeleted() && !commentRepository.existsByParentId(parent.getCommentId())) {
-                commentRepository.delete(parent);
+            Comment root = findComment(comment.getRootId());
+            if (root.getIsDeleted() && !commentRepository.existsByRootId(root.getCommentId())) {
+                commentRepository.delete(root);
             }
         }
+    }
+
+    private void hardDelete(Comment comment, User user) {
+        comment.validateOwner(user);
+        commentRepository.delete(comment);
     }
 
     private User findUser(Long userId) {
@@ -108,7 +111,6 @@ public class CommentService {
         return articleRepository.findById(articleId)
                 .orElseThrow(() -> new CustomException("게시글 없음"));
     }
-    // TODO: 여기까지 테스트를 위해 추가한 부분
 
     public Page<CommentResponseDto> getCommentList(Long articleId, Pageable pageable) {
         return commentRepository.findByArticle_ArticleId(articleId, pageable)
