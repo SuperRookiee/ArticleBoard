@@ -49,6 +49,11 @@ public class CommentController {
         return ResponseEntity.ok(commentService.getCommentList(articleId, pageable));
     }
 
-
+    @PostMapping("/{commentId}/reply")
+    public ResponseEntity<Long> createReply(@PathVariable Long commentId,
+                                            @RequestParam Long userId,
+                                            @RequestBody CommentRequestDto dto) {
+        Long replyId = commentService.createChildComment(dto, userId, commentId);
+        return ResponseEntity.status(HttpStatus.CREATED).body(replyId);
+    }
 }
-
