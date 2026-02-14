@@ -3,7 +3,9 @@ package com.articleboard.article.service;
 import com.articleboard.article.dto.ArticleListDto;
 import com.articleboard.article.dto.ArticleRequestDto;
 import com.articleboard.article.dto.ArticleResponseDto;
-import com.articleboard.article.entity.Article;
+import com.articleboard.article.entity.*;
+import com.articleboard.article.repository.ArticleDislikeRepository;
+import com.articleboard.article.repository.ArticleLikeRepository;
 import com.articleboard.article.repository.ArticleRepository;
 import com.articleboard.global.exception.CustomException;
 import com.articleboard.user.entity.User;
@@ -44,6 +46,8 @@ public class ArticleService {
 
     // TODO: 로그인 구현 후 User user로 변경, findUser() 및 UserRepository 제거
     private final UserRepository userRepository;  // 추가 (추후 로그인 구현 시 제거)
+    private final ArticleLikeRepository articleLikeRepository;
+    private final ArticleDislikeRepository articleDislikeRepository;
 
     @Transactional
     public Long createArticle(ArticleRequestDto dto, Long userId) {
@@ -103,5 +107,39 @@ public class ArticleService {
     private Article findArticle(Long articleId) {
         return articleRepository.findById(articleId)
                 .orElseThrow(() -> new CustomException("게시글 없음"));
+    }
+
+    public void toggleLike(Long articleId, Long userId) {
+        Article article = findArticle(articleId);
+        User user = findUser(userId);
+
+        articleLikeRepository.findById(ArticleLikeId.of(articleId, userId))
+                .ifPresentOrElse(
+                        like -> {
+                            articleLikeRepository.delete(like);
+                            article.decreaseLikeCount();
+                        },
+                        () -> {
+                            articleLikeRepository.save(ArticleLike.createArticleLike(article, user));
+                            article.increaseLikeCount();
+                        }
+                );
+    }
+
+    public void toggleDislike(Long articleId, Long userId) {
+        Article article = findArticle(articleId);
+        User user = findUser(userId);
+
+        articleDislikeRepository.findById(ArticleDislikeId.of(articleId, userId))
+                .ifPresentOrElse(
+                        dislike -> {
+                            articleDislikeRepository.delete(dislike);
+                            article.decreaseDislikeCount();
+                        },
+                        () -> {
+                            articleDislikeRepository.save(ArticleDislike.createArticleDislike(article, user));
+                            article.increaseDislikeCount();
+                        }
+                );
     }
 }

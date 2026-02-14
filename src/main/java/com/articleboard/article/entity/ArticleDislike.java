@@ -3,13 +3,11 @@ package com.articleboard.article.entity;
 import com.articleboard.user.entity.User;
 import jakarta.persistence.*;
 
-import java.io.Serializable;
-
 @Entity
-public class ArticleDislike implements Serializable {
+public class ArticleDislike {
 
     @EmbeddedId
-    private ArticleLikeId id;
+    private ArticleDislikeId id;
 
     @MapsId("articleId")
     @ManyToOne(fetch = FetchType.LAZY)
@@ -21,10 +19,16 @@ public class ArticleDislike implements Serializable {
     @JoinColumn(name = "user_id")
     private User user;
 
-    public ArticleDislike() {}
-
-    public ArticleDislike(Article article, User user) {
+    private ArticleDislike(Article article, User user) {
+        this.id = ArticleDislikeId.of(article.getArticleId(), user.getUserId());
         this.article = article;
         this.user = user;
+    }
+
+    protected ArticleDislike() {
+    }
+
+    public static ArticleDislike createArticleDislike(Article article, User user) {
+        return new ArticleDislike(article, user);
     }
 }

@@ -3,10 +3,8 @@ package com.articleboard.article.entity;
 import com.articleboard.user.entity.User;
 import jakarta.persistence.*;
 
-import java.io.Serializable;
-
 @Entity
-public class ArticleLike implements Serializable {
+public class ArticleLike {
 
     @EmbeddedId
     private ArticleLikeId id;
@@ -21,10 +19,16 @@ public class ArticleLike implements Serializable {
     @JoinColumn(name = "user_id")
     private User user;
 
-    public ArticleLike() {}
-
-    public ArticleLike(Article article, User user) {
+    private ArticleLike(Article article, User user) {
+        this.id = ArticleLikeId.of(article.getArticleId(), user.getUserId());
         this.article = article;
         this.user = user;
+    }
+
+    protected ArticleLike() {
+    }
+
+    public static ArticleLike createArticleLike(Article article, User user) {
+        return new ArticleLike(article, user);
     }
 }

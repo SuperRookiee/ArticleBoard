@@ -91,4 +91,20 @@ public class Article {
             throw new CustomException("권한 없음");
         }
     }
+
+    public void increaseLikeCount() {
+        this.likeCount += 1;
+    }
+
+    public void decreaseLikeCount() {
+        this.likeCount -= 1;
+    }
+
+    public void increaseDislikeCount() {
+        this.dislikeCount += 1;
+    }
+
+    public void decreaseDislikeCount() {
+        this.dislikeCount -= 1;
+    }
 }

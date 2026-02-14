@@ -11,6 +11,14 @@ public class ArticleLikeId implements Serializable {
     private Long articleId;
     private Long userId;
 
+    private ArticleLikeId(Long articleId, Long userId) {
+        this.articleId = articleId;
+        this.userId = userId;
+    }
+
+    protected ArticleLikeId() {
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
@@ -21,5 +29,9 @@ public class ArticleLikeId implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hash(articleId, userId);
+    }
+
+    public static ArticleLikeId of(Long articleId, Long userId) {
+        return new ArticleLikeId(articleId, userId);
     }
 }
