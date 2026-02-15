@@ -41,7 +41,7 @@ public class ArticleController {
                                        @RequestParam Long userId) {
         articleService.deleteArticle(articleId, userId);
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/{articleId}")
@@ -58,14 +58,7 @@ public class ArticleController {
     public ResponseEntity<Page<ArticleListDto>> search(@RequestParam String type,
                                                        @RequestParam String keyword,
                                                        Pageable pageable) {
-        Page<ArticleListDto> result = switch (type) {
-            case "title" -> articleService.searchByTitle(keyword, pageable);
-            case "title-content" -> articleService.searchByTitleOrContent(keyword, pageable);
-            case "content" -> articleService.searchByContent(keyword, pageable);
-            case "writer" -> articleService.searchByWriter(keyword, pageable);
-            default -> throw new CustomException("잘못된 검색 타입");
-        };
-        return ResponseEntity.ok(result);
+        return ResponseEntity.ok(articleService.search(type, keyword, pageable));
     }
 
     @GetMapping("/popular")

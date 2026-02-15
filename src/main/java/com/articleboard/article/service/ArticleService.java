@@ -86,6 +86,16 @@ public class ArticleService {
                 .map(ArticleListDto::from);
     }
 
+    public Page<ArticleListDto> search(String type, String keyword, Pageable pageable) {
+        return switch (type) {
+            case "title" -> searchByTitle(keyword, pageable);
+            case "title-content" -> searchByTitleOrContent(keyword, pageable);
+            case "content" -> searchByContent(keyword, pageable);
+            case "writer" -> searchByWriter(keyword, pageable);
+            default -> throw new CustomException("잘못된 검색 타입");
+        };
+    }
+
     public Article findById(Long articleId) {
         return articleRepository.findById(articleId)
                 .orElseThrow(() -> new CustomException("게시글 없음"));
