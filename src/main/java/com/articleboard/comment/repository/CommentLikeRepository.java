@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CommentLikeRepository extends JpaRepository<CommentLike, CommentLikeId> {
 
-    boolean existsByComment_IdAndUser_UserId(Long commentId, Long userId);
+    boolean existsByComment_commentIdAndUser_UserId(Long commentId, Long userId);
 
-    Long countByComment_Id(Long commentId);
+    Long countByComment_commentId(Long commentId);
 }

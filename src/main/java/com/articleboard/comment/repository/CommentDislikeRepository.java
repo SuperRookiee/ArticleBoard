@@ -8,8 +8,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CommentDislikeRepository extends JpaRepository<CommentDislike, CommentDislikeId> {
 
-    boolean existsByComment_IdAndUser_UserId(Long commentId, Long userId);
+    boolean existsByComment_commentIdAndUser_UserId(Long commentId, Long userId);
 
-    Long countByComment_Id(Long commentId);
+    Long countByComment_commentId(Long commentId);
 
 }
