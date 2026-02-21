@@ -82,4 +82,8 @@ public class User {
     public String getDisplayName() {
         return nicknameType == NicknameType.FIXED ? fixedName : temporaryName;
     }
+
+    public static User create(String userName, String encodedPassword, NicknameType nicknameType, String nickname) {
+        return new User(userName, encodedPassword, nicknameType, nickname);
+    }
 }
