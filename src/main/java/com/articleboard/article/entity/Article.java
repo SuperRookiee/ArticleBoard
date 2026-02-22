@@ -54,6 +54,9 @@ public class Article {
     @Column(nullable = false)
     private Long commentCount = 0L;
 
+    @Version
+    private Long version;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
