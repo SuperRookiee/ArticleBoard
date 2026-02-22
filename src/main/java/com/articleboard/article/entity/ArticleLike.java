@@ -1,6 +1,5 @@
 package com.articleboard.article.entity;
 
-import com.articleboard.user.entity.User;
 import jakarta.persistence.*;
 
 @Entity
@@ -14,21 +13,15 @@ public class ArticleLike {
     @JoinColumn(name = "article_id")
     private Article article;
 
-    @MapsId("userId")
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
-
-    private ArticleLike(Article article, User user) {
-        this.id = ArticleLikeId.of(article.getArticleId(), user.getUserId());
+    private ArticleLike(Article article, Long userId) {
+        this.id = ArticleLikeId.of(article.getArticleId(), userId);
         this.article = article;
-        this.user = user;
     }
 
     protected ArticleLike() {
     }
 
-    public static ArticleLike createArticleLike(Article article, User user) {
-        return new ArticleLike(article, user);
+    public static ArticleLike createArticleLike(Article article, Long userId) {
+        return new ArticleLike(article, userId);
     }
 }

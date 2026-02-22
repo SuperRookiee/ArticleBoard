@@ -78,18 +78,18 @@ public class Comment {
                 target.getCommentId());
     }
 
-    public void update(String content, User user) {
-        validateOwner(user);
+    public void update(String content, Long userId) {
+        validateOwner(userId);
         this.content = content;
     }
 
-    public void softDelete(User user) {
-        validateOwner(user);
+    public void softDelete(Long userId) {
+        validateOwner(userId);
         this.isDeleted = true;
     }
 
-    public void validateOwner(User user) {
-        if (!this.user.getUserId().equals(user.getUserId())) {
+    public void validateOwner(Long userId) {
+        if (!this.user.getUserId().equals(userId)) {
             throw new CustomException("권한 없음");
         }
     }

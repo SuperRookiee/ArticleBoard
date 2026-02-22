@@ -21,43 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class CommentService {
 
     private final CommentRepository commentRepository;
-
-    /*
-    @Transactional
-    public void createComment(CommentRequestDto dto, Article article, User user) {
-        commentRepository.save(Comment.createComment(dto.getContent(), article, user));
-    }
-
-    @Transactional
-    public void updateComment(Long commentId, CommentRequestDto dto, User user) {
-        Comment comment = findComment(commentId);
-        comment.update(dto.getContent(), user);
-    }
-
-    @Transactional
-    public void deleteComment(Long commentId, User user) {
-        Comment comment = findComment(commentId);
-        comment.validateOwner(user);
-
-        if (comment.getParentId() == null) {
-            if (commentRepository.existsByParentId(commentId)) {
-                comment.delete();
-            } else {
-                commentRepository.delete(comment);
-            }
-        } else {
-            commentRepository.delete(comment);
-
-            Comment parent = findComment(comment.getParentId());
-            if (parent.getIsDeleted() && !commentRepository.existsByParentId(parent.getId())) {
-                commentRepository.delete(parent);
-            }
-        }
-    }
-    */
-
-    // TODO: 로그인 구현 후 User user로 변경, findUser() 및 UserRepository 제거
-    private final UserRepository userRepository;  // 추가 (추후 로그인 구현 시 제거)
+    private final UserRepository userRepository;
     private final ArticleRepository articleRepository;
 
     @Transactional
@@ -72,23 +36,21 @@ public class CommentService {
     @Transactional
     public void updateComment(Long commentId, CommentRequestDto dto, Long userId) {
         Comment comment = findComment(commentId);
-        User user = findUser(userId);
-        comment.update(dto.getContent(), user);
+        comment.update(dto.getContent(), userId);
     }
 
     @Transactional
     public void deleteComment(Long commentId, Long userId) {
         Comment comment = findComment(commentId);
-        User user = findUser(userId);
 
         if (comment.getRootId() == null) {
             if (commentRepository.existsByRootId(comment.getCommentId())) {
-                comment.softDelete(user);
+                comment.softDelete(userId);
             } else {
-                hardDelete(comment, user);
+                hardDelete(comment, userId);
             }
         } else {
-            hardDelete(comment, user);
+            hardDelete(comment, userId);
 
             Comment root = findComment(comment.getRootId());
             if (root.getIsDeleted() && !commentRepository.existsByRootId(root.getCommentId())) {
@@ -97,8 +59,8 @@ public class CommentService {
         }
     }
 
-    private void hardDelete(Comment comment, User user) {
-        comment.validateOwner(user);
+    private void hardDelete(Comment comment, Long userId) {
+        comment.validateOwner(userId);
         commentRepository.delete(comment);
     }
 
