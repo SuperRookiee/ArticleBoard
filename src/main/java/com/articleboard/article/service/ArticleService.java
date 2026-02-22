@@ -6,6 +6,7 @@ import com.articleboard.article.dto.ArticleResponseDto;
 import com.articleboard.article.entity.Article;
 import com.articleboard.article.repository.ArticleRepository;
 import com.articleboard.global.exception.CustomException;
+import com.articleboard.global.exception.ErrorCode;
 import com.articleboard.user.entity.User;
 import com.articleboard.user.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -90,12 +91,12 @@ public class ArticleService {
             case "title-content" -> searchByTitleOrContent(keyword, pageable);
             case "content" -> searchByContent(keyword, pageable);
             case "writer" -> searchByWriter(keyword, pageable);
-            default -> throw new CustomException("잘못된 검색 타입");
+            default -> throw new CustomException(ErrorCode.INVALID_SEARCH_TYPE);
         };
     }
 
     public Article findById(Long articleId) {
         return articleRepository.findById(articleId)
-                .orElseThrow(() -> new CustomException("게시글 없음"));
+                .orElseThrow(() -> new CustomException(ErrorCode.ARTICLE_NOT_FOUND));
     }
 }

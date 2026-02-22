@@ -7,6 +7,7 @@ import com.articleboard.comment.dto.CommentResponseDto;
 import com.articleboard.comment.entity.Comment;
 import com.articleboard.comment.repository.CommentRepository;
 import com.articleboard.global.exception.CustomException;
+import com.articleboard.global.exception.ErrorCode;
 import com.articleboard.user.entity.User;
 import com.articleboard.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -66,12 +67,12 @@ public class CommentService {
 
     private User findUser(Long userId) {
         return userRepository.findById(userId)
-                .orElseThrow(() -> new CustomException("유저 없음"));
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
     }
 
     private Article findArticle(Long articleId) {
         return articleRepository.findById(articleId)
-                .orElseThrow(() -> new CustomException("게시글 없음"));
+                .orElseThrow(() -> new CustomException(ErrorCode.ARTICLE_NOT_FOUND));
     }
 
     public Page<CommentResponseDto> getCommentList(Long articleId, Pageable pageable) {
@@ -81,7 +82,7 @@ public class CommentService {
 
     private Comment findComment(Long commentId) {
         return commentRepository.findById(commentId)
-                .orElseThrow(() -> new CustomException("댓글 없음"));
+                .orElseThrow(() -> new CustomException(ErrorCode.COMMENT_NOT_FOUND));
     }
 
     @Transactional

@@ -2,6 +2,7 @@ package com.articleboard.comment.entity;
 
 import com.articleboard.article.entity.Article;
 import com.articleboard.global.exception.CustomException;
+import com.articleboard.global.exception.ErrorCode;
 import com.articleboard.user.entity.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -90,7 +91,7 @@ public class Comment {
 
     public void validateOwner(Long userId) {
         if (!this.user.getUserId().equals(userId)) {
-            throw new CustomException("권한 없음");
+            throw new CustomException(ErrorCode.FORBIDDEN);
         }
     }
 }

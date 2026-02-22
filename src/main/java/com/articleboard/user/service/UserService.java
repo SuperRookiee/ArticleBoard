@@ -1,6 +1,7 @@
 package com.articleboard.user.service;
 
 import com.articleboard.global.exception.CustomException;
+import com.articleboard.global.exception.ErrorCode;
 import com.articleboard.user.dto.UserRequestDto;
 import com.articleboard.user.entity.User;
 import com.articleboard.user.repository.UserRepository;
@@ -19,13 +20,13 @@ public class UserService {
 
     public User findById(Long userId) {
         return userRepository.findById(userId)
-                .orElseThrow(() -> new CustomException("유저 없음"));
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
     }
 
     @Transactional
     public void register(UserRequestDto request) {
         if (userRepository.existsByUserName(request.getUserName())) {
-            throw new CustomException("이미 존재하는 사용자입니다");
+            throw new CustomException(ErrorCode.DUPLICATE_USER);
         }
         userRepository.save(User.create(
                 request.getUserName(),
