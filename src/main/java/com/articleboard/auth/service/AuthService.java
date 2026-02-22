@@ -22,7 +22,11 @@ public class AuthService {
                 new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
         );
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-        String token = jwtUtil.generateToken(userDetails.getUsername(), userDetails.getUser().getRole().name());
+        String token = jwtUtil.generateToken(
+                userDetails.getUsername(),
+                userDetails.getUser().getRole().name(),
+                userDetails.getUser().getUserId()
+        );
         return new TokenResponseDto(token);
     }
 }
