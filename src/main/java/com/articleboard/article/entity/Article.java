@@ -77,8 +77,8 @@ public class Article {
         this.updatedAt = LocalDateTime.now();
     }
 
-    public void deleteArticle(User user) {
-        validateOwner(user);
+    public void deleteArticle(Long userId) {
+        validateOwner(userId);
         this.deletedAt = LocalDateTime.now();
     }
 
@@ -86,8 +86,8 @@ public class Article {
         this.viewCount += 1;
     }
 
-    public void validateOwner(User user) {
-        if (!this.user.getUserId().equals(user.getUserId())) {
+    public void validateOwner(Long userId) {
+        if (!this.user.getUserId().equals(userId)) {
             throw new CustomException("권한 없음");
         }
     }

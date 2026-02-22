@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -20,27 +21,23 @@ public class ArticleController {
     private final ArticleService articleService;
 
     @PostMapping
-    public ResponseEntity<Long> create(@RequestParam Long userId,
-                                       @RequestBody ArticleRequestDto dto) {
-        Long articleId = articleService.createArticle(dto, userId);
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(articleId);
+    public ResponseEntity<Long> create(@AuthenticationPrincipal Long userId,
+                                       @RequestBody ArticleRequestDto   dto) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(articleService.createArticle(dto, userId));
     }
 
     @PutMapping("/{articleId}")
     public ResponseEntity<Void> update(@PathVariable Long articleId,
-                                       @RequestParam Long userId,
+                                       @AuthenticationPrincipal Long userId,
                                        @RequestBody ArticleRequestDto dto) {
         articleService.updateArticle(articleId, dto, userId);
-
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{articleId}")
     public ResponseEntity<Void> delete(@PathVariable Long articleId,
-                                       @RequestParam Long userId) {
+                                       @AuthenticationPrincipal Long userId) {
         articleService.deleteArticle(articleId, userId);
-
         return ResponseEntity.noContent().build();
     }
 
@@ -63,7 +60,8 @@ public class ArticleController {
 
     @GetMapping("/popular")
     public ResponseEntity<Page<ArticleListDto>> getPopularArticles(@RequestParam(defaultValue = "10") Long minLike,
-                                                                   @RequestParam(defaultValue = "15") Long maxDislike, Pageable pageable) {
+                                                                   @RequestParam(defaultValue = "15") Long maxDislike,
+                                                                   Pageable pageable) {
         return ResponseEntity.ok(articleService.getPopularArticles(minLike, maxDislike, pageable));
     }
 

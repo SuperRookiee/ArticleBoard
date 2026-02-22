@@ -32,16 +32,14 @@ public class ArticleService {
     @Transactional
     public void updateArticle(Long articleId, ArticleRequestDto dto, Long userId) {
         Article article = findById(articleId);
-        User user = userService.findById(userId);
-        article.validateOwner(user);
+        article.validateOwner(userId);
         article.updateArticle(dto.getTitle(), dto.getContent(), dto.getIsNotice());
     }
 
     @Transactional
     public void deleteArticle(Long articleId, Long userId) {
         Article article = findById(articleId);
-        User user = userService.findById(userId);
-        article.deleteArticle(user);
+        article.deleteArticle(userId);
     }
 
     @Transactional
