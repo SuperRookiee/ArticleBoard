@@ -12,9 +12,10 @@ public class ArticleListDto {
 
     private final Long articleId;
     private final Boolean isNotice;
+    private final Boolean isPopular;
     private final String title;
     private final String writer;
-    private final LocalDateTime updatedAt;
+    private final LocalDateTime createdAt;
     private final Long viewCount;
     private final Long likeCount;
     private final Long dislikeCount;
@@ -23,9 +24,10 @@ public class ArticleListDto {
         return new ArticleListDto(
                 article.getArticleId(),
                 article.getIsNotice(),
+                article.getIsPopular(),
                 article.getTitle(),
                 article.getWriter(),
-                article.getUpdatedAt(),
+                article.getCreatedAt(),
                 article.getViewCount(),
                 article.getLikeCount(),
                 article.getDislikeCount()
