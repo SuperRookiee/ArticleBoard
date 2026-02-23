@@ -3,6 +3,7 @@ package com.articleboard.user.service;
 import com.articleboard.global.exception.CustomException;
 import com.articleboard.global.exception.ErrorCode;
 import com.articleboard.user.dto.UserRequestDto;
+import com.articleboard.user.entity.NicknameType;
 import com.articleboard.user.entity.User;
 import com.articleboard.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +28,10 @@ public class UserService {
     public void register(UserRequestDto request) {
         if (userRepository.existsByUserName(request.getUserName())) {
             throw new CustomException(ErrorCode.DUPLICATE_USER);
+        }
+        if (request.getNicknameType() == NicknameType.FIXED
+                && userRepository.existsByFixedName(request.getNickname())) {
+            throw new CustomException(ErrorCode.DUPLICATE_NICKNAME);
         }
         userRepository.save(User.create(
                 request.getUserName(),
