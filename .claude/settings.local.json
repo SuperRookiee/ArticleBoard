@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cd /c/Users/LeeWonWoo/Desktop/ArticleBoard && npm create vite@latest frontend -- --template react 2>&1)",
+      "Bash(export PATH=\"/c/Program Files/nodejs:$PATH\" && node --version && npm --version 2>&1)",
+      "Bash(cmd.exe:*)",
+      "Bash(node:*)"
+    ]
+  }
+}
