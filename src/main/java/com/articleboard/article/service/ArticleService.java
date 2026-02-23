@@ -101,4 +101,19 @@ public class ArticleService {
         return articleRepository.findById(articleId)
                 .orElseThrow(() -> new CustomException(ErrorCode.ARTICLE_NOT_FOUND));
     }
+
+    @Transactional
+    public void toggleNotice(Long articleId) {
+        findById(articleId).toggleNotice();
+    }
+
+    @Transactional
+    public void bump(Long articleId) {
+        findById(articleId).bump();
+    }
+
+    @Transactional
+    public void adminDeleteArticle(Long articleId) {
+        findById(articleId).adminDelete();
+    }
 }

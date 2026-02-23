@@ -22,7 +22,7 @@ public class ArticleController {
 
     @PostMapping
     public ResponseEntity<Long> create(@AuthenticationPrincipal Long userId,
-                                       @RequestBody ArticleRequestDto   dto) {
+                                       @RequestBody ArticleRequestDto dto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(articleService.createArticle(dto, userId));
     }
 
@@ -74,5 +74,23 @@ public class ArticleController {
     @GetMapping("/notice")
     public ResponseEntity<Page<ArticleListDto>> getNoticeArticles(Pageable pageable) {
         return ResponseEntity.ok(articleService.getNoticeArticles(pageable));
+    }
+
+    @DeleteMapping("/{articleId}/admin")
+    public ResponseEntity<Void> adminDelete(@PathVariable Long articleId) {
+        articleService.adminDeleteArticle(articleId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping("/{articleId}/notice")
+    public ResponseEntity<Void> toggleNotice(@PathVariable Long articleId) {
+        articleService.toggleNotice(articleId);
+        return ResponseEntity.ok().build();
+    }
+
+    @PatchMapping("/{articleId}/bump")
+    public ResponseEntity<Void> bump(@PathVariable Long articleId) {
+        articleService.bump(articleId);
+        return ResponseEntity.ok().build();
     }
 }

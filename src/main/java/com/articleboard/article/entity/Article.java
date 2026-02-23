@@ -57,6 +57,9 @@ public class Article {
     @Version
     private Long version;
 
+    @Column(nullable = false)
+    private Boolean isPopular = false;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
@@ -98,6 +101,9 @@ public class Article {
 
     public void increaseLikeCount() {
         this.likeCount += 1;
+        if (this.likeCount >= 10) {
+            this.isPopular = true;
+        }
     }
 
     public void decreaseLikeCount() {
@@ -110,5 +116,21 @@ public class Article {
 
     public void decreaseDislikeCount() {
         this.dislikeCount -= 1;
+    }
+
+    public void toggleNotice() {
+        this.isNotice = !this.isNotice;
+    }
+
+    public void bump() {
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    public void adminDelete() {
+        this.deletedAt = LocalDateTime.now();
+    }
+
+    public void resetPopular() {
+        this.isPopular = false;
     }
 }

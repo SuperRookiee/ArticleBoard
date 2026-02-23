@@ -41,6 +41,8 @@ public class SecurityConfig {
                                 "/api/articles", "/api/articles/**", "/api/comments").permitAll()
                         .requestMatchers(org.springframework.http.HttpMethod.POST,
                                 "/api/articles/*/view").permitAll()
+                        .requestMatchers("/api/articles/*/admin", "/api/articles/*/notice", "/api/articles/*/bump")
+                        .hasAuthority("MANAGER")
                         .requestMatchers("/admin/**").hasRole("MANAGER")
                         .anyRequest().authenticated()
                 )
