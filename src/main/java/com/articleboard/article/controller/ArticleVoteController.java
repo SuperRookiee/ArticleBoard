@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/articles/{articleId}/votes")
+@RequestMapping("/api/articles/{articleId}/votes")
 public class ArticleVoteController {
 
     private final ArticleVoteService articleVoteService;
