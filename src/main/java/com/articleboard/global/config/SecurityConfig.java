@@ -38,7 +38,9 @@ public class SecurityConfig {
                         .requestMatchers("/api/auth/**", "/api/users/register").permitAll()
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html").permitAll()
                         .requestMatchers(org.springframework.http.HttpMethod.GET,
-                                "/articles", "/articles/**", "/comments").permitAll()
+                                "/api/articles", "/api/articles/**", "/api/comments").permitAll()
+                        .requestMatchers(org.springframework.http.HttpMethod.POST,
+                                "/api/articles/*/view").permitAll()
                         .requestMatchers("/admin/**").hasRole("MANAGER")
                         .anyRequest().authenticated()
                 )

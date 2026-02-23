@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/articles")
+@RequestMapping("/api/articles")
 public class ArticleController {
 
     private final ArticleService articleService;
@@ -44,6 +44,12 @@ public class ArticleController {
     @GetMapping("/{articleId}")
     public ResponseEntity<ArticleResponseDto> get(@PathVariable Long articleId) {
         return ResponseEntity.ok(articleService.getArticle(articleId));
+    }
+
+    @PostMapping("/{articleId}/view")
+    public ResponseEntity<Void> increaseViewCount(@PathVariable Long articleId) {
+        articleService.increaseViewCount(articleId);
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping

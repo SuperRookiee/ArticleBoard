@@ -43,11 +43,13 @@ public class ArticleService {
         article.deleteArticle(userId);
     }
 
-    @Transactional
     public ArticleResponseDto getArticle(Long articleId) {
-        Article article = findById(articleId);
-        article.increaseViewCount();
-        return ArticleResponseDto.from(article);
+        return ArticleResponseDto.from(findById(articleId));
+    }
+
+    @Transactional
+    public void increaseViewCount(Long articleId) {
+        articleRepository.increaseViewCount(articleId);
     }
 
     public Page<ArticleListDto> getArticleList(Pageable pageable) {
