@@ -6,6 +6,7 @@ import com.articleboard.global.security.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -43,6 +44,7 @@ public class SecurityConfig {
                                 "/api/articles/*/view").permitAll()
                         .requestMatchers("/api/articles/*/admin", "/api/articles/*/notice", "/api/articles/*/bump")
                         .hasAuthority("MANAGER")
+                        .requestMatchers(HttpMethod.PATCH, "/api/articles/*/unpopular").hasAuthority("MANAGER")
                         .requestMatchers("/admin/**").hasRole("MANAGER")
                         .anyRequest().authenticated()
                 )

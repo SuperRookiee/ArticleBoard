@@ -116,4 +116,9 @@ public class ArticleService {
     public void adminDeleteArticle(Long articleId) {
         findById(articleId).adminDelete();
     }
+
+    @Transactional
+    public void resetPopular(Long articleId) {
+        findById(articleId).resetPopular();
+    }
 }
