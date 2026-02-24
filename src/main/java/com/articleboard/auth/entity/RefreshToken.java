@@ -31,7 +31,7 @@ public class RefreshToken {
 
     public RefreshToken(Long userId, long refreshExpirationMs) {
         this.token = UUID.randomUUID().toString();
-        this.id = userId;
+        this.userId = userId;
         this.createdAt = LocalDateTime.now();
         this.expiresAt = this.createdAt.plusSeconds(refreshExpirationMs / 1000);
     }
