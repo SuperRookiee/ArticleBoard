@@ -37,3 +37,4 @@ out/
 .vscode/
 
 .env
+frontend/node_modules/
