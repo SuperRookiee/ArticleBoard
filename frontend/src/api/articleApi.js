@@ -1,7 +1,7 @@
 import axiosInstance from './axiosInstance'
 
 export const getArticleList = (page = 0, size = 10) =>
-  axiosInstance.get('/api/articles', { params: { page, size } })
+  axiosInstance.get('/api/articles', { params: { page, size, sort: 'updatedAt,desc' } })
 
 export const getArticle = (id) =>
   axiosInstance.get(`/api/articles/${id}`)
@@ -16,7 +16,7 @@ export const deleteArticle = (id) =>
   axiosInstance.delete(`/api/articles/${id}`)
 
 export const searchArticles = (type, keyword, page = 0, size = 10) =>
-  axiosInstance.get('/api/articles/search', { params: { type, keyword, page, size } })
+  axiosInstance.get('/api/articles/search', { params: { type, keyword, page, size, sort: 'updatedAt,desc' } })
 
 export const increaseViewCount = (id) =>
   axiosInstance.post(`/api/articles/${id}/view`)

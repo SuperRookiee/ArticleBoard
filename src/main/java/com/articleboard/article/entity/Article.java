@@ -71,6 +71,7 @@ public class Article {
         this.isNotice = isNotice;
         this.user = user;
         this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
     }
 
     public static Article createArticle(String title, String content, Boolean isNotice, User user) {
