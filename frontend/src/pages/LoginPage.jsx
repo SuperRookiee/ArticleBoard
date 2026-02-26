@@ -14,7 +14,7 @@ export default function LoginPage() {
     e.preventDefault()
     try {
       const res = await loginApi(username, password)
-      login(res.data.token)
+      login(res.data.accessToken, res.data.refreshToken)
       navigate('/')
     } catch (err) {
       const msg = err.response?.data?.message || '로그인에 실패했습니다.'
