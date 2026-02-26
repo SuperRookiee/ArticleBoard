@@ -1,11 +1,16 @@
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
+import { logout as logoutApi } from '../api/authApi'
 
 export default function Navbar() {
   const { isAuthenticated, logout } = useAuth()
   const navigate = useNavigate()
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    try {
+      await logoutApi()
+    } catch {
+    }
     logout()
     navigate('/login')
   }

@@ -10,3 +10,9 @@ export const register = (userName, userPassword, nickname, nicknameType) =>
     nicknameType,
     nickname,
   })
+
+export const refresh = (refreshToken) =>
+  axiosInstance.post('/api/auth/refresh', { refreshToken })
+
+export const logout = () =>
+  axiosInstance.post('/api/auth/logout')

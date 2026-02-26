@@ -20,24 +20,28 @@ export function AuthProvider({ children }) {
   })
   const [role, setRole] = useState(() => localStorage.getItem('role'))
 
-  const login = useCallback((tokenValue) => {
-    const payload = decodeJwtPayload(tokenValue)
+  const login = useCallback((accessToken, refreshToken) => {
+    const payload = decodeJwtPayload(accessToken)
     const userIdValue = payload?.userId ?? null
     const roleValue = payload?.role ?? null
-    localStorage.setItem('token', tokenValue)
+    localStorage.setItem('token', accessToken)
+    if (refreshToken) {
+      localStorage.setItem('refreshToken', refreshToken)
+    }
     if (userIdValue !== null) {
       localStorage.setItem('userId', String(userIdValue))
     }
     if (roleValue !== null) {
       localStorage.setItem('role', roleValue)
     }
-    setToken(tokenValue)
+    setToken(accessToken)
     setUserId(userIdValue)
     setRole(roleValue)
   }, [])
 
   const logout = useCallback(() => {
     localStorage.removeItem('token')
+    localStorage.removeItem('refreshToken')
     localStorage.removeItem('userId')
     localStorage.removeItem('role')
     setToken(null)
